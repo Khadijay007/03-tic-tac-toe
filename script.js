@@ -10,7 +10,7 @@ const scoreOElement = document.getElementById("scoreO");
 const scoreDrawElement = document.getElementById("scoreDraw");
 
 
-let board = ["", "", "", "", "", "", "", "", ""];
+let board = ["", "", "", "", "", "", "", ""];
 
 let currentPlayer = "X";
 
