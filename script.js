@@ -10,7 +10,7 @@ const scoreOElement = document.getElementById("scoreO");
 const scoreDrawElement = document.getElementById("scoreDraw");
 
 
-let board = ["", "", "", "", "", "", "", ""];
+let board = ["", "", "", "", "", "", "", "", ""];
 
 let currentPlayer = "X";
 
@@ -22,6 +22,7 @@ let scoreDraw = 0;
 
 
 const winningCombinations = [
+
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -32,37 +33,56 @@ const winningCombinations = [
 
     [0, 4, 8],
     [2, 4, 6]
+
 ];
 
+
+// Cell Click
 function handleCellClick(event) {
+
     const clickedCell = event.currentTarget;
-    const clickedIndex = Number(clickedCell.dataset.index);
 
-    console.log("Clicked box:", clickedIndex);
+    const clickedIndex = Number(
+        clickedCell.getAttribute("data-index")
+    );
 
-    if (board[clickedIndex] !== "" || !gameActive) {
+
+    // Don't allow clicking occupied cells
+    if (board[clickedIndex] !== "") {
         return;
     }
 
+
+    // Don't allow moves after game ends
+    if (!gameActive) {
+        return;
+    }
+
+
+    // Put X or O in the board
     board[clickedIndex] = currentPlayer;
+
     clickedCell.textContent = currentPlayer;
 
+
+    // Check result
     checkGameResult();
+
 }
 
-cells.forEach(cell => {
-    cell.addEventListener("click", handleCellClick);
-});
 
+// Check Game Result
 function checkGameResult() {
 
     let roundWon = false;
+
 
     for (let combination of winningCombinations) {
 
         const first = combination[0];
         const second = combination[1];
         const third = combination[2];
+
 
         if (
             board[first] !== "" &&
@@ -73,15 +93,20 @@ function checkGameResult() {
             roundWon = true;
 
             break;
+
         }
+
     }
 
+
+    // Player won
     if (roundWon) {
 
         statusText.textContent =
             `Player ${currentPlayer} Wins! 🎉`;
 
         gameActive = false;
+
 
         if (currentPlayer === "X") {
 
@@ -94,12 +119,15 @@ function checkGameResult() {
             scoreO++;
 
             scoreOElement.textContent = scoreO;
+
         }
 
         return;
+
     }
 
 
+    // Draw
     if (!board.includes("")) {
 
         statusText.textContent =
@@ -112,17 +140,22 @@ function checkGameResult() {
         gameActive = false;
 
         return;
+
     }
 
 
+    // Change player
     currentPlayer =
         currentPlayer === "X" ? "O" : "X";
 
+
     statusText.textContent =
         `Player ${currentPlayer}'s Turn`;
+
 }
 
 
+// Restart Round
 function restartGame() {
 
     board = ["", "", "", "", "", "", "", ""];
@@ -131,31 +164,43 @@ function restartGame() {
 
     gameActive = true;
 
+
     statusText.textContent =
         "Player X's Turn";
+
 
     cells.forEach(cell => {
 
         cell.textContent = "";
 
     });
+
 }
 
 
+// Reset Score
 function resetScore() {
 
     scoreX = 0;
+
     scoreO = 0;
+
     scoreDraw = 0;
 
+
     scoreXElement.textContent = "0";
+
     scoreOElement.textContent = "0";
+
     scoreDrawElement.textContent = "0";
 
+
     restartGame();
+
 }
 
 
+// Add click event ONLY ONCE
 cells.forEach(cell => {
 
     cell.addEventListener(
@@ -166,12 +211,14 @@ cells.forEach(cell => {
 });
 
 
+// Restart button
 restartButton.addEventListener(
     "click",
     restartGame
 );
 
 
+// Reset button
 resetButton.addEventListener(
     "click",
     resetScore
