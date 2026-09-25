@@ -34,24 +34,25 @@ const winningCombinations = [
     [2, 4, 6]
 ];
 
-
 function handleCellClick(event) {
+    const clickedCell = event.currentTarget;
+    const clickedIndex = Number(clickedCell.dataset.index);
 
-    const clickedCell = event.target;
-
-    const clickedIndex = clickedCell.getAttribute("data-index");
+    console.log("Clicked box:", clickedIndex);
 
     if (board[clickedIndex] !== "" || !gameActive) {
         return;
     }
 
     board[clickedIndex] = currentPlayer;
-
     clickedCell.textContent = currentPlayer;
 
     checkGameResult();
 }
 
+cells.forEach(cell => {
+    cell.addEventListener("click", handleCellClick);
+});
 
 function checkGameResult() {
 
